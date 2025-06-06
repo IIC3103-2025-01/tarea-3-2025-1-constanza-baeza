@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+numpy
+requests
+beautifulsoup4
+lxml
+faiss-cpu
