@@ -6,13 +6,6 @@ import time
 
 from fastapi.middleware.cors import CORSMiddleware
 
-
-# from backend.utils.scraper import obtener_texto_articulo
-# from backend.utils.splitter import fragmentar_texto
-# from backend.utils.embeddings import obtener_embedding, normalizar_vector
-# from backend.utils.vector_db import DBVectorialFAISS
-# from backend.utils.llm_client import preguntar_al_llm
-
 from utils.scraper import obtener_texto_articulo
 from utils.splitter import fragmentar_texto
 from utils.embeddings import obtener_embedding, normalizar_vector
@@ -20,6 +13,13 @@ from utils.vector_db import DBVectorialFAISS
 from utils.llm_client import preguntar_al_llm
 
 app = FastAPI()
+
+# Ruta raíz para evitar error 404 en Render
+@app.get("/")
+def read_root():
+    return {"mensaje": "Wikipedia Chatbot activo"}
+
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  
@@ -28,7 +28,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-db  = DBVectorialFAISS(dim=768)
+db = DBVectorialFAISS(dim=768)
 
 class IndexarRequest(BaseModel):
     url: str
@@ -45,14 +45,14 @@ async def indexar(req: IndexarRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-    fragments   = fragmentar_texto(texto)
-    vecs        = []
-    textos_ok   = []
-    
+    fragments = fragmentar_texto(texto)
+    vecs = []
+    textos_ok = []
+
     for f in fragments:
         try:
             emb = obtener_embedding(f)
-            time.sleep(1)  
+            time.sleep(1)  # Para evitar rate limit
         except Exception:
             continue
         vecs.append(normalizar_vector(emb))
@@ -67,24 +67,21 @@ async def indexar(req: IndexarRequest):
 
 @app.post("/preguntar")
 async def preguntar(req: PreguntarRequest):
-   
     try:
         emb_q = normalizar_vector(obtener_embedding(req.pregunta))
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=503, detail="No se pudo vectorizar la pregunta.")
 
     query_arr = np.array([emb_q], dtype="float32")
 
     similares = db.buscar_similares(query_arr, top_k=3)
-    textos    = [texto for texto, _ in similares]
+    textos = [texto for texto, _ in similares]
     print("Preguntando al LLM con contexto:", textos)
-    time.sleep(0.1)  
+    time.sleep(0.1)
 
     if not textos:
-        
         return {"respuesta": "", "contexto": []}
 
-    
     try:
         respuesta = preguntar_al_llm(textos, req.pregunta)
     except requests.exceptions.HTTPError as http_err:
