@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/tarea-3-2025-1-constanza-baeza/static/css/main.e6c13ad2.css",
+    "main.js": "/tarea-3-2025-1-constanza-baeza/static/js/main.41f7f750.js",
+    "static/js/453.8ab44547.chunk.js": "/tarea-3-2025-1-constanza-baeza/static/js/453.8ab44547.chunk.js",
+    "index.html": "/tarea-3-2025-1-constanza-baeza/index.html",
+    "main.e6c13ad2.css.map": "/tarea-3-2025-1-constanza-baeza/static/css/main.e6c13ad2.css.map",
+    "main.41f7f750.js.map": "/tarea-3-2025-1-constanza-baeza/static/js/main.41f7f750.js.map",
+    "453.8ab44547.chunk.js.map": "/tarea-3-2025-1-constanza-baeza/static/js/453.8ab44547.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.41f7f750.js"
+  ]
+}
