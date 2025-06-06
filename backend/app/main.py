@@ -7,11 +7,17 @@ import time
 from fastapi.middleware.cors import CORSMiddleware
 
 
-from backend.utils.scraper import obtener_texto_articulo
-from backend.utils.splitter import fragmentar_texto
-from backend.utils.embeddings import obtener_embedding, normalizar_vector
-from backend.utils.vector_db import DBVectorialFAISS
-from backend.utils.llm_client import preguntar_al_llm
+# from backend.utils.scraper import obtener_texto_articulo
+# from backend.utils.splitter import fragmentar_texto
+# from backend.utils.embeddings import obtener_embedding, normalizar_vector
+# from backend.utils.vector_db import DBVectorialFAISS
+# from backend.utils.llm_client import preguntar_al_llm
+
+from utils.scraper import obtener_texto_articulo
+from utils.splitter import fragmentar_texto
+from utils.embeddings import obtener_embedding, normalizar_vector
+from utils.vector_db import DBVectorialFAISS
+from utils.llm_client import preguntar_al_llm
 
 app = FastAPI()
 app.add_middleware(

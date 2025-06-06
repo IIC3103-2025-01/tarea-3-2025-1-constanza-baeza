@@ -2,6 +2,7 @@ import os
 import requests
 
 LLM_URL = os.getenv("ASTEROIDE_LLM_URL", "https://asteroide.ing.uc.cl/v1/chat/completions")
+
 MODELO_LLM = "integracion"
 
 def preguntar_al_llm(fragmentos: list[str], pregunta: str) -> str:
